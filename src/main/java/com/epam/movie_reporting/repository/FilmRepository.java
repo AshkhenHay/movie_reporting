@@ -2,6 +2,11 @@ package com.epam.movie_reporting.repository;
 
 import com.epam.movie_reporting.model.Film;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface FilmRepository extends JpaRepository<Film, Integer> {
+import java.util.Optional;
+
+@Repository
+public interface FilmRepository extends JpaRepository<Film, Long> {
+    Optional<Film> findById(Long id);
 }

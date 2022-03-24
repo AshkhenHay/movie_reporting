@@ -1,48 +1,71 @@
 package com.epam.movie_reporting.service;
 
-import com.epam.movie_reporting.exeption.DuplicateEntityExeption;
-import com.epam.movie_reporting.exeption.NotFoundExeption;
+
+import com.epam.movie_reporting.config.mapper.userMapper.UserRequestMapper;
+import com.epam.movie_reporting.config.mapper.userMapper.UserResponseMapper;
+import com.epam.movie_reporting.dto.UserRequestDTO;
+import com.epam.movie_reporting.dto.UserResponseDTO;
+import com.epam.movie_reporting.exeption.DuplicateEntityException;
+import com.epam.movie_reporting.exeption.NotFoundException;
 import com.epam.movie_reporting.model.User;
 import com.epam.movie_reporting.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
-public class UserServiceImpl implements GenericService<User> {
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+public class UserServiceImpl implements GenericService<UserRequestDTO, UserResponseDTO> {
 
-    @Override
-    public List<User> getAll() {
-        return userRepository.findAll();
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final UserResponseMapper userResponseMapper;
+    private final UserRequestMapper userRequestMapper;
+
+    public UserServiceImpl(UserRepository userRepository,
+                           PasswordEncoder passwordEncoder,
+                           UserResponseMapper userResponseMapper,
+                           UserRequestMapper userRequestMapper) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.userResponseMapper = userResponseMapper;
+        this.userRequestMapper = userRequestMapper;
     }
 
     @Override
-    public User save(User user) {
-        Optional<User> byEmail = userRepository.findByEmail(user.getEmail());
-        if (!byEmail.isPresent()) {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-            return userRepository.save(user);
+    public List<UserResponseDTO> getAll() {
+        List<User> allUser = userRepository.findAll();
+        return allUser
+                .stream()
+                .map(user -> userResponseMapper.mapToDTO(user))
+                .collect(Collectors.toList());
+
+
+    }
+
+    @Override
+    public UserResponseDTO save(UserRequestDTO userRequestDTO) {
+        Optional<User> existingUser = userRepository.findByEmail(userRequestDTO.getEmail());
+        if (!existingUser.isPresent()) {
+            userRequestDTO.setPassword(passwordEncoder.encode(userRequestDTO.getPassword()));
+            User user = userRequestMapper.mapToEntity(userRequestDTO);
+            User saveUser = userRepository.save(user);
+            return userResponseMapper.mapToDTO(saveUser);
         } else {
-            throw new DuplicateEntityExeption("Email already exist");
+            throw new DuplicateEntityException("Email already exist");
         }
 
     }
 
 
-
     @Override
-    public User update(User entity) {
-        Optional<User> existingUser = userRepository.findById(entity.getId());
-        if (existingUser.isEmpty()) {
-            throw new NotFoundExeption("User not found");
+    public UserResponseDTO update(UserRequestDTO entity, long id) {
+        Optional<User> existingUser = userRepository.findById(id);
+        if (!existingUser.isPresent()) {
+            throw new NotFoundException("User not found");
         } else {
             User user = existingUser.get();
             user.setFirstName(entity.getFirstName());
@@ -50,14 +73,33 @@ public class UserServiceImpl implements GenericService<User> {
             user.setAge(entity.getAge());
             user.setEmail(entity.getEmail());
             user.setPassword(passwordEncoder.encode(entity.getPassword()));
-            return userRepository.save(user);
+            User saveUser = userRepository.save(user);
+            return userResponseMapper.mapToDTO(saveUser);
+
         }
 
     }
 
     @Override
-    public void delete(int id) {
-        userRepository.deleteById(id);
+    public UserResponseDTO getById(long id) {
+        Optional<User> existingUser = userRepository.findById(id);
+        if (existingUser.isPresent()) {
+            return userResponseMapper.mapToDTO(existingUser.get());
+        } else {
+            throw new NotFoundException("User not found");
+
+        }
+    }
+
+    @Override
+    public void delete(long id) {
+        Optional<User> existingUser = userRepository.findById(id);
+        if (existingUser.isPresent()) {
+            userRepository.deleteById(id);
+        } else {
+            throw new NotFoundException("User not found");
+        }
+
     }
 
 

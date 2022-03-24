@@ -1,15 +1,13 @@
 package com.epam.movie_reporting.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class FilmDTO {
+public class FilmRequestDTO {
     private String name;
     private int ageRestriction;
     private int rateAverage;

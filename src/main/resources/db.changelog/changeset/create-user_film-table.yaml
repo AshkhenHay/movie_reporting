@@ -1,0 +1,34 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-user_film
+      author: ashkhen_hayrapetyan@epam.com
+      changes:
+        - createTable:
+            tableName: user_film
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: rate
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: user_fk
+                    referencedTableName: users
+                    referencedColumnNames: id
+              - column:
+                  name: film_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: film_fk
+                    referencedTableName: film
+                    referencedColumnNames: id

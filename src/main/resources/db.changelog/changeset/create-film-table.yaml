@@ -1,0 +1,28 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-film
+      author: ashkhen_hayrapetyan@epam.com
+      changes:
+        - createTable:
+            tableName: film
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: age_restriction
+                  type: Integer
+                  constraints:
+                    nullable: false
+              - column:
+                  name: rate_average
+                  type: Integer
