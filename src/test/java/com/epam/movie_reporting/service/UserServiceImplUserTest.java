@@ -20,9 +20,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.List;
 import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
@@ -35,7 +33,7 @@ public class UserServiceImplUserTest extends UserTestHelper {
     UserRequestMapper requestMapper = Mockito.mock(UserRequestMapper.class);
     UserResponseMapper responseMapper = Mockito.mock(UserResponseMapper.class);
 
-    private UserServiceImpl userService;
+    private UserService userService;
 
     private User user;
     private UserResponseDTO responseDto;
@@ -43,7 +41,7 @@ public class UserServiceImplUserTest extends UserTestHelper {
 
     @BeforeEach
     void setUp() {
-        userService = new UserServiceImpl(userRepository, passwordEncoder, responseMapper, requestMapper);
+        userService = new UserService(userRepository, passwordEncoder, responseMapper, requestMapper);
         requestDto = generateUserRequestDTO();
         responseDto = generateUserResponseDTO();
         user = generateUser();
@@ -51,15 +49,6 @@ public class UserServiceImplUserTest extends UserTestHelper {
 
     @AfterEach
     void tearDown() {
-    }
-
-    @Test
-    void getAllTest() {
-        when(userRepository.findAll()).thenReturn(List.of(user));
-        when(responseMapper.mapToDTO(any(User.class))).thenReturn(responseDto);
-        userService.getAll();
-        verify(userRepository, times(1)).findAll();
-
     }
 
     @Test
@@ -94,16 +83,6 @@ public class UserServiceImplUserTest extends UserTestHelper {
     }
 
     @Test
-    void getByIdTest() {
-        when(userRepository.findById(anyLong())).thenReturn(Optional.of(user));
-        when(responseMapper.mapToDTO(any(User.class))).thenReturn(responseDto);
-
-        userService.getById(1L);
-
-        verify(userRepository, times(1)).findById(anyLong());
-    }
-
-    @Test
     public void deleteTest() {
         when(userRepository.findById(anyLong())).thenReturn(Optional.of(user));
         userService.delete(1L);
@@ -121,7 +100,6 @@ public class UserServiceImplUserTest extends UserTestHelper {
     @Test
     public void notFoundExceptionTest() {
         when(userRepository.findById(any(Long.class))).thenReturn(Optional.empty());
-        Assertions.assertThrows(NotFoundException.class, () -> userService.getById(any(Long.class)));
         Assertions.assertThrows(NotFoundException.class, () -> userService.delete(any(Long.class)));
         Assertions.assertThrows(NotFoundException.class, () -> userService.update(requestDto, any(Long.class)));
     }

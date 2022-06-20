@@ -9,42 +9,32 @@ import com.epam.movie_reporting.exeption.DuplicateEntityException;
 import com.epam.movie_reporting.exeption.NotFoundException;
 import com.epam.movie_reporting.model.User;
 import com.epam.movie_reporting.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 
 @Service
-public class UserServiceImpl implements GenericService<UserRequestDTO, UserResponseDTO> {
+public class UserService implements GenericService<UserRequestDTO, UserResponseDTO> {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserResponseMapper userResponseMapper;
     private final UserRequestMapper userRequestMapper;
 
-    public UserServiceImpl(UserRepository userRepository,
-                           PasswordEncoder passwordEncoder,
-                           UserResponseMapper userResponseMapper,
-                           UserRequestMapper userRequestMapper) {
+    @Autowired
+    public UserService(UserRepository userRepository,
+                       PasswordEncoder passwordEncoder,
+                       UserResponseMapper userResponseMapper,
+                       UserRequestMapper userRequestMapper) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.userResponseMapper = userResponseMapper;
         this.userRequestMapper = userRequestMapper;
     }
 
-    @Override
-    public List<UserResponseDTO> getAll() {
-        List<User> allUser = userRepository.findAll();
-        return allUser
-                .stream()
-                .map(user -> userResponseMapper.mapToDTO(user))
-                .collect(Collectors.toList());
-
-
-    }
 
     @Override
     public UserResponseDTO save(UserRequestDTO userRequestDTO) {
@@ -57,7 +47,6 @@ public class UserServiceImpl implements GenericService<UserRequestDTO, UserRespo
         } else {
             throw new DuplicateEntityException("Email already exist");
         }
-
     }
 
 
@@ -75,18 +64,6 @@ public class UserServiceImpl implements GenericService<UserRequestDTO, UserRespo
             user.setPassword(passwordEncoder.encode(entity.getPassword()));
             User saveUser = userRepository.save(user);
             return userResponseMapper.mapToDTO(saveUser);
-
-        }
-
-    }
-
-    @Override
-    public UserResponseDTO getById(long id) {
-        Optional<User> existingUser = userRepository.findById(id);
-        if (existingUser.isPresent()) {
-            return userResponseMapper.mapToDTO(existingUser.get());
-        } else {
-            throw new NotFoundException("User not found");
 
         }
     }

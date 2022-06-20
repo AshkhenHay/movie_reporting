@@ -1,11 +1,13 @@
 package com.epam.movie_reporting.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Builder
@@ -29,11 +31,11 @@ public class User {
     private String email;
     @Column(name = "password")
     private String password;
-
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
-    private Set<UserFilm> userFilm;
+    private Set<UserFilm> userFilm = new HashSet<>();
 
 
 }

@@ -6,7 +6,6 @@ import java.util.List;
 
 @Service
 public interface GenericService<Q, A> {
-    List<A> getAll();
 
     A save(Q entity);
 
@@ -14,7 +13,7 @@ public interface GenericService<Q, A> {
 
     void delete(long id);
 
-    A getById(long id);
+
 
 
 }

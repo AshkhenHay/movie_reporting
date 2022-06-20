@@ -1,34 +1,21 @@
 package com.epam.movie_reporting.endpoint;
 
 import com.epam.movie_reporting.dto.FilmRequestDTO;
-import com.epam.movie_reporting.dto.FilmResponseDTO;
-import com.epam.movie_reporting.service.FilmServiceImpl;
+import com.epam.movie_reporting.service.FilmService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Slf4j
 @RestController
 @RequestMapping("/film")
 public class FilmController {
 
-
     @Autowired
-    private FilmServiceImpl filmService;
+    private FilmService filmService;
 
 
-    @GetMapping("")
-    public List<FilmResponseDTO> getAllFilms() {
-        return filmService.getAll();
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity getFilmById(@PathVariable("id") long id) {
-        return ResponseEntity.ok(filmService.getById(id));
-    }
 
     @PostMapping("")
     public ResponseEntity saveFilm(@RequestBody FilmRequestDTO filmRequestDTO) {

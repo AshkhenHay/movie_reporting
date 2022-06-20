@@ -10,36 +10,25 @@ import com.epam.movie_reporting.repository.FilmRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 
 @Service
-public class FilmServiceImpl implements GenericService<FilmRequestDTO, FilmResponseDTO> {
+public class FilmService implements GenericService<FilmRequestDTO, FilmResponseDTO> {
 
     private final FilmRepository filmRepository;
     private final FilmRequestMapper filmRequestMapper;
     private final FilmResponseMapper filmResponseMapper;
 
     @Autowired
-    public FilmServiceImpl(FilmRepository filmRepository,
-                           FilmRequestMapper filmRequestMapper,
-                           FilmResponseMapper filmResponseMapper) {
+    public FilmService(FilmRepository filmRepository,
+                       FilmRequestMapper filmRequestMapper,
+                       FilmResponseMapper filmResponseMapper) {
         this.filmRepository = filmRepository;
         this.filmResponseMapper = filmResponseMapper;
         this.filmRequestMapper = filmRequestMapper;
     }
 
-
-    @Override
-    public List<FilmResponseDTO> getAll() {
-        List<Film> allFilms = filmRepository.findAll();
-        return allFilms
-                .stream()
-                .map(film -> filmResponseMapper.mapToDTO(film))
-                .collect(Collectors.toList());
-    }
 
     @Override
     public FilmResponseDTO save(FilmRequestDTO filmRequestDTO) {
@@ -63,15 +52,6 @@ public class FilmServiceImpl implements GenericService<FilmRequestDTO, FilmRespo
         }
     }
 
-    @Override
-    public FilmResponseDTO getById(long id) {
-        Optional<Film> existingFilm = filmRepository.findById(id);
-        if (!existingFilm.isEmpty()) {
-            return filmResponseMapper.mapToDTO(existingFilm.get());
-        } else {
-            throw new NotFoundException("Film not found");
-        }
-    }
 
     @Override
     public void delete(long id) {
