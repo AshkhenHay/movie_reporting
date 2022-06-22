@@ -25,8 +25,6 @@ public class Film {
     private String name;
     @Column(name = "age_restriction")
     private int ageRestriction;
-    @Column(name = "rate_average")
-    private int rateAverage;
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)

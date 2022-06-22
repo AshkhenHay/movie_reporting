@@ -13,6 +13,8 @@ import com.epam.movie_reporting.repository.UserFilmRepository;
 import com.epam.movie_reporting.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.Optional;
 
@@ -54,7 +56,8 @@ public class UserFilmService {
         } else {
             UserFilm userFilm = existingUserFilm.get();
             userFilm.setRate(rate);
-            return userFilmResponseMapper.mapToDTO(userFilm);
+            UserFilm save = userFilmRepository.save(userFilm);
+            return userFilmResponseMapper.mapToDTO(save);
         }
     }
 

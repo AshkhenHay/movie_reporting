@@ -13,7 +13,6 @@ public class FilmResponseMapper implements BaseMapper<Film, FilmResponseDTO> {
                 .id(film.getId())
                 .name(film.getName())
                 .ageRestriction(film.getAgeRestriction())
-                .rateAverage(film.getRateAverage())
                 .build();
     }
 
@@ -23,7 +22,6 @@ public class FilmResponseMapper implements BaseMapper<Film, FilmResponseDTO> {
                 .id(filmResponseDTO.getId())
                 .name(filmResponseDTO.getName())
                 .ageRestriction(filmResponseDTO.getAgeRestriction())
-                .rateAverage(filmResponseDTO.getRateAverage())
                 .build();
     }
 }

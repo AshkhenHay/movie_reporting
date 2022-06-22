@@ -23,6 +23,3 @@ databaseChangeLog:
                   type: Integer
                   constraints:
                     nullable: false
-              - column:
-                  name: rate_average
-                  type: Integer

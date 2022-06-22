@@ -7,6 +7,7 @@ import com.epam.movie_reporting.dto.FilmResponseDTO;
 import com.epam.movie_reporting.exeption.NotFoundException;
 import com.epam.movie_reporting.model.Film;
 import com.epam.movie_reporting.repository.FilmRepository;
+import com.epam.movie_reporting.repository.UserFilmRepository;
 import com.epam.movie_reporting.util.FilmTestHelper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -47,17 +48,13 @@ public class FilmServiceTest extends FilmTestHelper {
     }
 
 
-
     @Test
     void saveTest() {
         when(requestMapper.mapToEntity(any(FilmRequestDTO.class))).thenReturn(film);
         when(filmRepository.save(any(Film.class))).thenReturn(film);
         when(responseMapper.mapToDTO(any(Film.class))).thenReturn(responseDto);
 
-        FilmResponseDTO saveFilm = filmService.save(requestDto);
-//        assertEquals(saveFilm.getName(), responseDto.getName());
-//        assertEquals(saveFilm.getAgeRestriction(), responseDto.getAgeRestriction());
-//        assertEquals(saveFilm.getRateAverage(), responseDto.getRateAverage());
+        filmService.save(requestDto);
         verify(filmRepository, times(1)).save(any(Film.class));
     }
 
@@ -69,10 +66,7 @@ public class FilmServiceTest extends FilmTestHelper {
 
         assertEquals(film.getName(), requestDto.getName());
         assertEquals(film.getAgeRestriction(), requestDto.getAgeRestriction());
-        assertEquals(film.getRateAverage(), requestDto.getRateAverage());
         filmService.update(requestDto, 1L);
-
-
         verify(filmRepository, times(1)).save(any(Film.class));
 
     }

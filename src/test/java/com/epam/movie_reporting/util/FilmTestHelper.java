@@ -12,7 +12,6 @@ public class FilmTestHelper {
         return FilmRequestDTO.builder()
                 .name("test_Name")
                 .ageRestriction(18)
-                .rateAverage(10)
                 .build();
     }
 
@@ -21,7 +20,6 @@ public class FilmTestHelper {
                 .id(1L)
                 .name("test_Name")
                 .ageRestriction(18)
-                .rateAverage(10)
                 .build();
     }
 
@@ -31,7 +29,6 @@ public class FilmTestHelper {
                 .id(1L)
                 .name("test_Name")
                 .ageRestriction(18)
-                .rateAverage(10)
                 .build();
     }
 

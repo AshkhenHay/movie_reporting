@@ -12,7 +12,6 @@ public class FilmRequestMapper implements BaseMapper<Film, FilmRequestDTO> {
         return FilmRequestDTO.builder()
                 .name(film.getName())
                 .ageRestriction(film.getAgeRestriction())
-                .rateAverage(film.getRateAverage())
                 .build();
     }
 
@@ -21,7 +20,6 @@ public class FilmRequestMapper implements BaseMapper<Film, FilmRequestDTO> {
         return Film.builder()
                 .name(filmRequestDTO.getName())
                 .ageRestriction(filmRequestDTO.getAgeRestriction())
-                .rateAverage(filmRequestDTO.getRateAverage())
                 .build();
     }
 }

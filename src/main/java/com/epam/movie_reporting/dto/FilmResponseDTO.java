@@ -11,5 +11,4 @@ public class FilmResponseDTO {
     private long id;
     private String name;
     private int ageRestriction;
-    private int rateAverage;
 }

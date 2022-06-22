@@ -1,12 +1,9 @@
 package com.epam.movie_reporting.endpoint;
 
-import com.epam.movie_reporting.dto.UserFilmRequestDTO;
 import com.epam.movie_reporting.dto.UserFilmResponseDTO;
-import com.epam.movie_reporting.dto.UserRequestDTO;
 import com.epam.movie_reporting.service.UserFilmService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -20,12 +17,12 @@ public class UserFilmController {
 
     @PostMapping("/{userId}/film/{filmId}/{rate}")
     public UserFilmResponseDTO saveUserFilm(@PathVariable("userId") long userId, @PathVariable("filmId") long filmId, @PathVariable int rate) {
-       log.info("UserFilm was created " );
-        return userFilmService.save(userId,filmId,rate);
+        log.info("UserFilm was created ");
+        return userFilmService.save(userId, filmId, rate);
 
     }
 
-    @PutMapping("/{id}/{rate}")
+    @PatchMapping("/{id}/{rate}")
     public UserFilmResponseDTO update(@PathVariable("id") long id, @PathVariable int rate) {
         log.info("Film's rate was successfully modified  ");
         return userFilmService.update(id, rate);
@@ -37,5 +34,4 @@ public class UserFilmController {
         userFilmService.delete(id);
 
     }
-
 }

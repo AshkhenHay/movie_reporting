@@ -6,11 +6,14 @@ import com.epam.movie_reporting.dto.FilmRequestDTO;
 import com.epam.movie_reporting.dto.FilmResponseDTO;
 import com.epam.movie_reporting.exeption.NotFoundException;
 import com.epam.movie_reporting.model.Film;
+import com.epam.movie_reporting.model.UserFilm;
 import com.epam.movie_reporting.repository.FilmRepository;
+import com.epam.movie_reporting.repository.UserFilmRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.Set;
 
 
 @Service

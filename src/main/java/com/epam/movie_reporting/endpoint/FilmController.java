@@ -16,7 +16,6 @@ public class FilmController {
     private FilmService filmService;
 
 
-
     @PostMapping("")
     public ResponseEntity saveFilm(@RequestBody FilmRequestDTO filmRequestDTO) {
         log.info("Film with " + filmRequestDTO.getName() + "  was added");
@@ -36,5 +35,4 @@ public class FilmController {
         filmService.delete(id);
 
     }
-
 }

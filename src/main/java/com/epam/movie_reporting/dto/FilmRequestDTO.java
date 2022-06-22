@@ -10,5 +10,4 @@ import lombok.*;
 public class FilmRequestDTO {
     private String name;
     private int ageRestriction;
-    private int rateAverage;
 }
