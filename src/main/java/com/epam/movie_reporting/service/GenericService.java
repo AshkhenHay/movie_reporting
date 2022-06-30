@@ -3,17 +3,15 @@ package com.epam.movie_reporting.service;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
-public interface GenericService<T> {
-    List<T> getAll();
+public interface GenericService<Q, A> {
 
-   T save(T entity);
+    A save(Q entity);
 
-    T update(T entity);
+    A update(Q entity, long id);
 
-    void delete(int id);
+    void delete(long id);
 
 
 
